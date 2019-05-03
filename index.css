@@ -8,53 +8,67 @@ body {
     padding: 0px;
     margin: 0px;
 }
-#container {
+#math, #section {
+    position: relative;
     background-color: #1d2641;
     border-radius: 5px;
     display: flex;
     flex-direction: column;
     margin: 10px 0px;
     width: 50vw;
+    height: 7vw;
     min-width: 336px;
-    padding: 0px 0px 10px 0px;
-    box-shadow: 0px 50px 60px #00000069;
+    padding: 10px 10px;
+/*     box-shadow: 0px 50px 60px #00000069;*/
     overflow: hidden;
     font-size: 12px;
     color: #ababab;
     align-items: center;
+    justify-content: center;
 }
 #mathExpression{
     letter-spacing: 6px;
     color: #808080;
     font-size: 30px;
 }
-select {
-    -moz-appearance: none;
-    -webkit-appearance: none;
-    border: none;
-    padding: 4px 4px;
-    background-color: #3f3f3f;
-    color: #808080;
-}
-#numbersToPlay {
-    background-color: #3f3f3f;
-    display: flex;
-    flex-direction: row;
-    padding: 0px;
-    position: relative;
-    z-index: 5;
-    color: #808080;
-    font-size: 12px;
-    width: 10vw;
-    justify-content: flex-end; 
-}
 #myProgress {
-    width: 50vw;
+    width: 25vw;
     background-color: grey;
-  }
+}
   
 #myBar {
     width: 1%;
-    height: 30px;
-    background-color: green;
-  }
+    height: 20px;
+    background-color: #ababab;
+}
+
+input[type="submit"] {
+    display: row;
+    margin: 10px 10px;
+    background-color: #ababab;
+    border: none;
+    color: white;
+    padding: 4px 24px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 14px;
+    cursor: pointer;
+    -webkit-transition-duration: 0.4s; /* Safari */
+    transition-duration: 0.4s;
+} 
+input[type="submit"]:hover {
+    box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19);
+}
+table, td, th {
+    border: 1px solid black;
+}
+
+table {
+    border-collapse: collapse;
+    width: 99%;
+}
+
+td {
+    padding: 15px;
+    text-align: left;
+}

@@ -15,11 +15,16 @@ let score = 0;
 
 window.onload = function (){
     $('#startGame').html('Alusta mängu').on('click', startGame);
+    $('#mathExpression').html("Matemaatiline mäng!");
 
 };
 
 function startGame(){
     score = -100;
+    correctAnswers = 0;
+    wrongAnswers = 0;
+    timerWidth = 1;
+    innerInfoToHTML();
     numbersToPlay = $('#numbersToPlay').val();
     numbersToPlay = Number(numbersToPlay);
     numbersToPlay += numbersToPlay-1;
@@ -32,21 +37,8 @@ function startGame(){
     }
     playing = true;
     createExpression();
-    timer = requestAnimationFrame(loop);
+    loop();
     
-}
-function loop() {
-    console.log(timerWidth);
-    if (timerWidth >= 100) {
-        cancelAnimationFrame(timer);
-        console.log("test");
-        endGame();
-        
-    } else {
-        timerWidth++; 
-        //timerDiv.css( "width", timerWidth + "%");
-        document.getElementById('myBar').style.width = timerWidth + '%'; 
-    }
 }
 function createExpression(){
     $('#mathExpression').html(" ");
@@ -119,13 +111,14 @@ function endGame(){
         {val : 5, text: '5'}
       ];
       
-      let sel = $('<select id = "numbersToPlay">').appendTo('#section');
+      let sel = $('<select id = "numbersToPlay">').appendTo('#buttons');
       $(arr).each(function() {
        sel.append($("<option>").attr('value',this.val).text(this.text));
       });
       
 
 }
+
 //Generate functions
 function roundToTwo(num) {    
     return +(Math.round(num + "e+2")  + "e-2");
@@ -159,24 +152,45 @@ function randomSign(nr){
     return nr;
 }
 
+//Important functsions
 function checkAnswer(nr){
     console.log(nr);
     
     if(correctAnswer == nr){
         console.log("tubli");
         createExpression();
-        correctAnswers++;
-        $("#correctCount").html('Õigeid: ' + score);
-        
+        correctAnswers++;        
     } else {
         console.log("Proovi paremini");
         wrongAnswers++;
-        $("#wrongCount").html('Valesid: ' + wrongAnswers);
-        
+        if(wrongAnswers > 5){
+            clearInterval(timer);
+            endGame();
+        }
     }
-    
+    innerInfoToHTML();
 }
+
 function showStats(){
     console.log("kohal");
     
+}
+function innerInfoToHTML(){
+    $("#correctCount").html(correctAnswers);
+    $("#score").html(score);
+    $("#wrongCount").html(wrongAnswers + '/5');
+}
+function loop() {
+    timer = setInterval(frame, 70);
+    console.log(timerWidth);
+    function frame(){
+        if (timerWidth >= 100) {
+            clearInterval(timer);
+            endGame();
+            
+        } else {
+            timerWidth++; 
+            $("#myBar").css( "width", timerWidth + "%");
+        }
+    }
 }
