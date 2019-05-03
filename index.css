@@ -14,22 +14,21 @@ body {
     border-radius: 5px;
     display: flex;
     flex-direction: column;
-    margin: 10px 0px;
+    margin: 10px 10px;
     width: 50vw;
-    height: 7vw;
     min-width: 336px;
     padding: 10px 10px;
-/*     box-shadow: 0px 50px 60px #00000069;*/
-    overflow: hidden;
+    align-items: center;
     font-size: 12px;
     color: #ababab;
-    align-items: center;
-    justify-content: center;
 }
-#mathExpression{
+.math{
+    position: relative;
     letter-spacing: 6px;
     color: #808080;
     font-size: 30px;
+}
+.mathBtn{
 }
 #myProgress {
     width: 25vw;
@@ -44,13 +43,14 @@ body {
 
 input[type="submit"] {
     display: row;
-    margin: 10px 10px;
+    margin: 10px;
     background-color: #ababab;
     border: none;
     color: white;
     padding: 4px 24px;
     text-align: center;
     text-decoration: none;
+    width: 12vw;
     font-size: 14px;
     cursor: pointer;
     -webkit-transition-duration: 0.4s; /* Safari */
@@ -65,10 +65,10 @@ table, td, th {
 
 table {
     border-collapse: collapse;
-    width: 99%;
 }
 
-td {
+td, th {
     padding: 15px;
+    width: 100%;
     text-align: left;
 }
