@@ -30,10 +30,12 @@ body {
 }
 #myProgress {
     width: 25vw;
+    border-radius: 5px;
     background-color: grey;
 }
   
 #myBar {
+    border-radius: 5px;
     width: 1%;
     height: 20px;
     background-color: #ababab;
@@ -53,6 +55,7 @@ input[type="submit"] {
     cursor: pointer;
     -webkit-transition-duration: 0.4s; /* Safari */
     transition-duration: 0.4s;
+    border-radius: 3px;
 } 
 input[type="submit"]:hover {
     box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19);
@@ -67,6 +70,7 @@ td, th {
     text-align: left;
 }
 caption {
+    color: red;
     font-size: 30px;
     
 }

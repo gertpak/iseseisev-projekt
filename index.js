@@ -17,6 +17,10 @@ let nextLevel;
 let playerName = "";
 
 window.onload = function (){
+    makeAnimation('#mathExpression');
+    makeAnimation('#mathAnswer');
+    makeAnimation('#myProgress');
+    
     createButton('#mathAnswer','Alusta!', "startGame", "startGame()", "submit");
     $('#mathExpression').html("Matemaatiline mäng!");
     showStats();
@@ -24,6 +28,10 @@ window.onload = function (){
 };
 
 function startGame(){
+    makeOpacity('#mathExpression');
+    makeOpacity('#mathAnswer');
+    makeOpacity('#scoreTable');
+    makeOpacity('#myProgress');
     $('#scoreTable').html('<table><tr><td>Õigeid: <span id="correctCount">0</span></td><td>Valesid: <span id="wrongCount">0/5</span></td><td>Skoor: <span id="score">0</span></td></tr></table>');
     score = 0;
     correctAnswers = 0;
@@ -50,6 +58,8 @@ function createExpression(){
     if(firstTime == true){
         firstTime = false;
     } else {
+        makeOpacity('#mathExpression');
+        makeOpacity('#mathAnswer');
         score = score + (100 - timerWidth);
     }
     timerWidth = 1;
@@ -111,6 +121,8 @@ function endGame(){
     if(playerName == ""){ playerName = "Võõras"; }
     $.post("server.php?function=save", {name: playerName, score: score, correct: correctAnswers, wrong: wrongAnswers}).done(setTimeout(200));
     
+    makeAnimation('#mathExpression');
+    makeAnimation('#mathAnswer');
     $('#playerName').remove();
     $('#sendName').remove();
     $('#mathExpression').html(playerName + "! <br>Sinu skoor: " + score);
@@ -179,12 +191,12 @@ function randomSign(nr){
 
 //Important functsions
 function checkAnswer(nr){
-    console.log(nr);
-    
     if(correctAnswer == nr){
         correctAnswers++;
         nextLevel++;
         if(nextLevel >= 10){
+            makeOpacity('#mathExpression');
+            makeOpacity('#mathAnswer');
             $('#mathExpression').html("JÄRGMINE TASE!");
             clearInterval(timer);
             $('#answer1Btn').remove();
@@ -216,7 +228,8 @@ function checkAnswer(nr){
 }
 
 function showStats(){
-    $('#scoreTable').html("").append('<table id = "test">');
+    makeAnimation('#scoreTable');
+    $('#scoreTable').html("").append('<table id = "scoreboard">');
     $('#scoreTable').append('<caption>TOP 15</caption><thead><tr><th>Jrk</th><th>Nimi</th><th>Skoor</th><th>Õigeid</th></tr></thead>');
     $.get("server.php?function=data", function (data) {
         content = JSON.parse(data).content;
@@ -227,8 +240,6 @@ function showStats(){
             if(playerName == detail.name && score == detail.score && score != 0 && correctAnswers == detail.correct){
                 $('#scoreTable').append('<tbody><tr style="color: red;"><td>'+ jrk +'</td><td>'+ detail.name +'</td><td>'+ detail.score +'</td><td>'+ detail.correct +'</td></tr></tbody>');
             } else {
-                console.log("hiljem");
-                
                 $('#scoreTable').append('<tbody><tr><td>'+ jrk +'</td><td>'+ detail.name +'</td><td>'+ detail.score +'</td><td>'+ detail.correct +'</td></tr></tbody>');
             }
         });
@@ -267,6 +278,26 @@ function askName(){
     $('#answer1Btn').remove();
     $('#answer2Btn').remove();
     $('#answer3Btn').remove();
+    $('#mathExpression').html('Sisesta oma nimi!');
     createButton('#mathAnswer','Sinu nimi', "playerName", playerName, "text");
     createButton('#mathAnswer','Saada!', "sendName", "endGame()", "submit");
+}
+function makeAnimation(id){
+    $(id).css('opacity', '0');
+    $(id).animate({
+        marginLeft: "-0.15in",
+    }, 500 ); 
+    $(id).animate({
+        opacity: 1,
+        marginLeft: "0in",
+    }, 500 );
+}
+function makeOpacity(id){
+    //$(id).css('opacity', '0');
+    $(id).animate({
+        opacity: 0.5,
+    }, 1 ); 
+    $(id).animate({
+        opacity: 1,
+    }, 100 );
 }
