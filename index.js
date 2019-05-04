@@ -32,9 +32,6 @@ function startGame(){
     nextLevel = 0;
     firstTime = true;
     innerInfoToHTML();
-/*     numbersToPlay = $('#numbersToPlay').val();
-    numbersToPlay = Number(numbersToPlay);
-    numbersToPlay += numbersToPlay-1; */
     numbersToPlay = 3;
     if(playing != true){
         $('#startGame').remove();
@@ -188,10 +185,24 @@ function checkAnswer(nr){
         correctAnswers++;
         nextLevel++;
         if(nextLevel >= 10){
+            $('#mathExpression').html("JÄRGMINE TASE!");
+            clearInterval(timer);
+            $('#answer1Btn').remove();
+            $('#answer2Btn').remove();
+            $('#answer3Btn').remove();
+            setTimeout(function (){
+                createButton('#mathAnswer',' ', "answer1Btn", "checkAnswer(this.value)","submit");
+                createButton('#mathAnswer',' ', "answer2Btn", "checkAnswer(this.value)","submit");
+                createButton('#mathAnswer',' ', "answer3Btn", "checkAnswer(this.value)","submit");
+                loop();
+                createExpression();
+            }, 2000);
             numbersToPlay += 2;
             nextLevel = 0;
-        } 
-        createExpression();
+        } else {
+            createExpression();
+        }
+        
 
     } else {
         console.log("Proovi paremini");
@@ -205,7 +216,8 @@ function checkAnswer(nr){
 }
 
 function showStats(){
-    $('#scoreTable').html("").append('<caption>TOP 15</caption><tr><th>Jrk</th><th>Nimi</th><th>Skoor</th><th>Õigeid</th></tr>');
+    $('#scoreTable').html("").append('<table id = "test">');
+    $('#scoreTable').append('<caption>TOP 15</caption><thead><tr><th>Jrk</th><th>Nimi</th><th>Skoor</th><th>Õigeid</th></tr></thead>');
     $.get("server.php?function=data", function (data) {
         content = JSON.parse(data).content;
         let jrk = 0;
@@ -213,13 +225,16 @@ function showStats(){
         content.forEach(function (detail) {
             jrk++;
             if(playerName == detail.name && score == detail.score && score != 0 && correctAnswers == detail.correct){
-                $('#scoreTable').append('<tr style="color: red;"><td>'+ jrk +'</td><td>'+ detail.name +'</td><td>'+ detail.score +'</td><td>'+ detail.correct +'</td></tr>');
+                $('#scoreTable').append('<tbody><tr style="color: red;"><td>'+ jrk +'</td><td>'+ detail.name +'</td><td>'+ detail.score +'</td><td>'+ detail.correct +'</td></tr></tbody>');
             } else {
-                $('#scoreTable').append('<tr><td>'+ jrk +'</td><td>'+ detail.name +'</td><td>'+ detail.score +'</td><td>'+ detail.correct +'</td></tr>');
+                console.log("hiljem");
+                
+                $('#scoreTable').append('<tbody><tr><td>'+ jrk +'</td><td>'+ detail.name +'</td><td>'+ detail.score +'</td><td>'+ detail.correct +'</td></tr></tbody>');
             }
         });
     });
-    $('#scoreTabel').append('</table>');
+    setTimeout(function(){ $('#scoreTable').append('</table>'); console.log("ennem"); }, 1000);
+    
     
 }
 function innerInfoToHTML(){
@@ -232,9 +247,16 @@ function loop() {
     console.log(timerWidth);
     function frame(){
         if (timerWidth >= 100) {
-            clearInterval(timer);
-            askName();
-            
+            if(wrongAnswers < 4){
+                wrongAnswers++;
+                firstTime = true;
+                createExpression();
+            } else {
+                clearInterval(timer);
+                wrongAnswers++;
+                askName();
+            }
+            innerInfoToHTML();
         } else {
             timerWidth++; 
             $("#myBar").css( "width", timerWidth + "%");

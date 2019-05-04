@@ -28,8 +28,6 @@ body {
     color: #808080;
     font-size: 30px;
 }
-.mathBtn{
-}
 #myProgress {
     width: 25vw;
     background-color: grey;
@@ -61,14 +59,14 @@ input[type="submit"]:hover {
 }
 table, td, th {
     border: 1px solid black;
-}
-
-table {
     border-collapse: collapse;
 }
 
 td, th {
     padding: 15px;
-    width: 100%;
     text-align: left;
+}
+caption {
+    font-size: 30px;
+    
 }
