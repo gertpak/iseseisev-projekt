@@ -8,14 +8,15 @@ let correctAnswer;
 let playing = false;
 let firstTime = true;
 let correctAnswers = 0, wrongAnswers = 0;
-let test = [];
 let mathArray = [];
 let numbersToPlay;
 let timerWidth = 1;
 let score = 0;
 let nextLevel;
 let playerName = "";
-
+let arrows;
+let content;
+let pressing;
 window.onload = function (){
     makeAnimation('#mathExpression');
     makeAnimation('#mathAnswer');
@@ -28,10 +29,16 @@ window.onload = function (){
 };
 
 function startGame(){
+    console.log("mäng algas");
+    
+    $('#myProgress').css('display', 'block');
+    $('#arrows').css('display', 'flex');
     makeOpacity('#mathExpression');
     makeOpacity('#mathAnswer');
     makeOpacity('#scoreTable');
     makeOpacity('#myProgress');
+    makeOpacity('#arrows');
+
     $('#scoreTable').html('<table><tr><td>Õigeid: <span id="correctCount">0</span></td><td>Valesid: <span id="wrongCount">0/5</span></td><td>Skoor: <span id="score">0</span></td></tr></table>');
     score = 0;
     correctAnswers = 0;
@@ -51,6 +58,7 @@ function startGame(){
     playing = true;
     createExpression();
     loop();
+    window.addEventListener('keydown', arrowAnswer);
     
 }
 function createExpression(){
@@ -76,26 +84,38 @@ function createExpression(){
         $('#mathExpression').append(mathArray[i]);
         
     }
-    console.log(mathArray);
     correctAnswer = roundToTwo(eval($('#mathExpression').html()));
-    console.log(correctAnswer);
 
     if(correctAnswer == "Infinity" || isNaN(correctAnswer) == true){
-        createExpression();
-        
+        createExpression(); 
     }
     
     expression = $('#mathExpression').html();
-    console.log(expression);
 
     setValues();
+            
+
+}
+function arrowAnswer(e){
+    if(e.keyCode == 37) {
+        checkAnswer($('#answer1Btn').val());
+        
+    }//Left
+    else if(e.keyCode == 40){
+        checkAnswer($('#answer2Btn').val());
+        
+    }//down
+    else if(e.keyCode == 39){
+        checkAnswer($('#answer3Btn').val());
+        
+    }//right
 }
 
 function setValues(){
     let randomMethod = makeRandom(2);
     let randomAnswer1 = roundToTwo(eval(correctAnswer +  randomSign(makeRandom(3)) + makeRandom(maxRandom)));
     let randomAnswer2 = roundToTwo(eval(correctAnswer +  randomSign(makeRandom(3)) + makeRandom(maxRandom)));
-    console.log(correctAnswer +  randomSign(makeRandom(3)) + makeRandom(maxRandom));
+    //console.log(correctAnswer +  randomSign(makeRandom(3)) + makeRandom(maxRandom));
     
     if(isNaN(randomAnswer1) == false && isNaN(randomAnswer2) == false && correctAnswer != randomAnswer1 && correctAnswer != randomAnswer2 && randomAnswer1 != randomAnswer2){
         if(randomMethod == 0){
@@ -116,31 +136,27 @@ function setValues(){
     }
 }
 function endGame(){
-    playing = false;
+    console.log("mäng läbi");
+    
+    playing = false; 
+    if(pressing == true){
+        window.removeEventListener('keypress', sendToEnd);
+    } 
+    pressing = false;
     playerName = $('#playerName').val();
     if(playerName == ""){ playerName = "Võõras"; }
-    $.post("server.php?function=save", {name: playerName, score: score, correct: correctAnswers, wrong: wrongAnswers}).done(setTimeout(200));
+    $('#myProgress').css('display', 'none');
+    $.post("server.php?function=save", {name: playerName, score: score, correct: correctAnswers, wrong: wrongAnswers}).done(setTimeout(300));
     
     makeAnimation('#mathExpression');
     makeAnimation('#mathAnswer');
     $('#playerName').remove();
     $('#sendName').remove();
-    $('#mathExpression').html(playerName + "! <br>Sinu skoor: " + score);
+    $('#mathExpression').html(playerName  + "! <br>Sinu skoor: " + score);
     $('#answer1Btn').remove();
     $('#answer2Btn').remove();
     $('#answer3Btn').remove();
     createButton('#mathAnswer','Uuesti!', "startGame", "startGame()", "submit");
-/*     let arr = [
-        {val : 2, text: '2'},
-        {val : 3, text: '3'},
-        {val : 4, text: '4'},
-        {val : 5, text: '5'}
-      ];
-      
-      let sel = $('<select id = "numbersToPlay">').appendTo('#buttons');
-      $(arr).each(function() {
-       sel.append($("<option>").attr('value',this.val).text(this.text));
-      }); */
     showStats();
       
 
@@ -192,6 +208,8 @@ function randomSign(nr){
 //Important functsions
 function checkAnswer(nr){
     if(correctAnswer == nr){
+        console.log("õige");
+        
         correctAnswers++;
         nextLevel++;
         if(nextLevel >= 10){
@@ -208,19 +226,34 @@ function checkAnswer(nr){
                 createButton('#mathAnswer',' ', "answer3Btn", "checkAnswer(this.value)","submit");
                 loop();
                 createExpression();
+                arrows = false;
             }, 2000);
             numbersToPlay += 2;
             nextLevel = 0;
+
         } else {
             createExpression();
+            arrows = false;
         }
         
 
     } else {
-        console.log("Proovi paremini");
+        console.log("vale");
+        
+        if($('#answer1Btn').val() == nr){
+            document.querySelector("#answer1Btn").classList.add("bounce");
+            setTimeout(function(){ document.querySelector("#answer1Btn").classList.remove("bounce"); }, 1000);
+        } else if($('#answer2Btn').val() == nr){
+            document.querySelector("#answer2Btn").classList.add("bounce");
+            setTimeout(function(){ document.querySelector("#answer2Btn").classList.remove("bounce"); }, 1000);
+        } else if($('#answer3Btn').val() == nr){
+            document.querySelector("#answer3Btn").classList.add("bounce");
+            setTimeout(function(){ document.querySelector("#answer3Btn").classList.remove("bounce"); }, 1000);
+        }
         wrongAnswers++;
         if(wrongAnswers >= 5){
             clearInterval(timer);
+            window.removeEventListener('keydown', arrowAnswer);
             askName();
         }
     }
@@ -243,10 +276,14 @@ function showStats(){
                 $('#scoreTable').append('<tbody><tr><td>'+ jrk +'</td><td>'+ detail.name +'</td><td>'+ detail.score +'</td><td>'+ detail.correct +'</td></tr></tbody>');
             }
         });
+        saveInLocalStorage();
     });
-    setTimeout(function(){ $('#scoreTable').append('</table>'); console.log("ennem"); }, 1000);
+    setTimeout(function(){ $('#scoreTable').append('</table>');}, 1000);
     
     
+}
+function saveInLocalStorage(){
+    window.localStorage.setItem('content', JSON.stringify(content));
 }
 function innerInfoToHTML(){
     $("#correctCount").html(correctAnswers);
@@ -255,9 +292,11 @@ function innerInfoToHTML(){
 }
 function loop() {
     timer = setInterval(frame, 70);
-    console.log(timerWidth);
+    //console.log(timerWidth);
     function frame(){
         if (timerWidth >= 100) {
+            document.querySelector("#myProgress").classList.add("bounce");
+            setTimeout(function(){ document.querySelector("#myProgress").classList.remove("bounce"); }, 1000);
             if(wrongAnswers < 4){
                 wrongAnswers++;
                 firstTime = true;
@@ -265,6 +304,7 @@ function loop() {
             } else {
                 clearInterval(timer);
                 wrongAnswers++;
+                window.removeEventListener('keydown', arrowAnswer);
                 askName();
             }
             innerInfoToHTML();
@@ -275,12 +315,29 @@ function loop() {
     }
 }
 function askName(){
+    console.log("sisesta nimi");
     $('#answer1Btn').remove();
     $('#answer2Btn').remove();
     $('#answer3Btn').remove();
+    makeOpacity('#arrows');
+    $('#arrows').css('display', 'none');
     $('#mathExpression').html('Sisesta oma nimi!');
     createButton('#mathAnswer','Sinu nimi', "playerName", playerName, "text");
     createButton('#mathAnswer','Saada!', "sendName", "endGame()", "submit");
+    $('#playerName').focus();
+    window.addEventListener('keypress', sendToEnd);
+    pressing = true;
+}
+function sendToEnd(e) {
+    if(pressing == true){
+        if(e.keyCode == 13){
+            window.removeEventListener('keypress', sendToEnd); 
+            endGame();
+            pressing = false;
+        } else {
+            return;
+        }
+    }
 }
 function makeAnimation(id){
     $(id).css('opacity', '0');
@@ -293,7 +350,6 @@ function makeAnimation(id){
     }, 500 );
 }
 function makeOpacity(id){
-    //$(id).css('opacity', '0');
     $(id).animate({
         opacity: 0.5,
     }, 1 ); 

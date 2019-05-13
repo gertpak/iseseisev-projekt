@@ -1,25 +1,12 @@
-# iseseisev-projekt
-Eesrakenduste arendamise iseseisva projekti lähteülesanne. 
+# Matemaatiline mäng
+Autor: **Gertin Pakkonen**
 
-Töö võib teha teha 1-4 liikmelise meeskonnana. Punkte jaotatakse vastavalt sellele, mitu liiget on meeskonnas:
-* 1 liige - max 60 punkti/inimene.
-* 2 liiget - max 40 punkti/inimene.
-* 3 liiget - max 30 punkti/inimene.
-* 4 liiget - max 20 punkti/inimene.
 
-**NB! Kui meeskonnas on rohkem kui üks liige, siis peab githubis selgelt välja tulema, kes millist osa tegi, et oleks võimalik hinnata iga meeskonnaliikme individuaalset panust.**
+Rakendus on meelelahutuslik ning sellega on hea harjutada enda arvutamisoskust. Kui mängu alustada, genereeritakse sulle üks avaldis ning kolm vastust. Pead valima sobiva vastuse. Vastust saad valida nii klaviatuuri nooltega kui ka lihtsalt peale vajutades õigele vastusele. Kogu aeg jookseb ka all aeg, mille järgi arvutatakse skoor. Kui ei jõua õige ajaga vastata, siis lisatakse sulle üks miinu punkt. Kokku võib olla 5 miinus punkti, peale seda saab sinu jaoks mäng läbi. 
 
-README.md fail sisaldab:
-1. suurelt rakenduse nime;
-1. autorite nimesid;
-1. rakenduse funktsionaalsuse kirjeldust;
-1. ekraanitõmmist rakendusest.
+Iga 10 õigesti vastatud avaldise taganat muutub mäng ühe astme võrra raskemaks. Saad võrrelda ka enda skoori teistega, sest välja on kuvatud TOP 15. Kui sa TOP'i ei mahu, on põhjust uuesti proovida. Vajab kiiret reageerimist ning tegelikult pole ka aega vahepeal kalkulaatoriga arvutada. Hea võimalus õppida tehete järjekorda. 
 
-Rakenduse puhul peavad olema täidetud vähemalt järgmised nõuded:
-  * rakendus lahendab tõsist probleemi või on meelelahutusliku eesmärgiga; 
-  * rakenduse idee peab olema kooskõlastatud õppejõuga;
-  * töötab võrguta olekus;
-  * responsive disain;
-  * saab kasutada "add to Home screen" funktsionaalsust.
+**TÕMMISED:**
+![Avaleht mängust](https://www.upload.ee/image/9957084/Screen_Shot_2019-05-13_at_12.40.06.png)
+![Mängu sisene kuvatõmmis](https://www.upload.ee/image/9957085/Screen_Shot_2019-05-13_at_12.41.16.png)
 
-Rakenduses võib kasutada teiste autorite koodi, kuid enda panus peab olema natuke enamat kui võrguta olekus töötamine. 
