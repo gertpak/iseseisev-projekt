@@ -46,6 +46,11 @@ body {
     transition: all 0.05s linear;
 }
 
+#error{
+    color: red;
+    justify-content: center;
+    font-size: 14px;
+}
 input[type="submit"] {
     display: row;
     margin: 10px;
