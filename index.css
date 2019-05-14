@@ -57,11 +57,10 @@ input[type="submit"] {
     background-color: #FF99EF;
     border: none;
     color: white;
-    padding: 4px 24px;
     text-align: center;
     text-decoration: none;
     width: 12vw;
-    font-size: 14px;
+    font-size: 1.3vw;
     cursor: pointer;
     -webkit-transition-duration: 0.4s; /* Safari */
     transition-duration: 0.4s;
